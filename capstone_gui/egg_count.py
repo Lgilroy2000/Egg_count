@@ -1,16 +1,19 @@
 import os
 from ultralytics import YOLO
 import cv2
-
+from datetime import datetime
+from buff_handler import checkbuff
 # Global variable to count eggs
 eggcount = 0  
 
 def counter(im_path):
+    
     global eggcount  # Ensure global variable is used inside function
-
+    current_datetime = datetime.now()
+    datetime_string = current_datetime.strftime("%Y_%m_%d_%H_%M_%S")
     # Path to the image
     image_path = im_path  # Replace with your image file path
-    output_image_path = 'complete.jpg'  # Path for saving the output image
+    output_image_path = "counted/complete_"+datetime_string+".jpg"  # Path for saving the output image
 
     # Load the image
     image = cv2.imread(image_path)
@@ -49,9 +52,12 @@ def counter(im_path):
 
     # Save the output image
     cv2.imwrite(output_image_path, image)
+    os.remove("current.jpg")
 
     
     print("Eggs counted:", eggcount)
+    checkbuff()
+    return(output_image_path)
     
 
 # Run the function
